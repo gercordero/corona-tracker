@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "./Cards.styles";
+import { CardsContainer } from "./Cards.styles";
 import {
   Card,
   CardContent,
@@ -14,7 +14,7 @@ const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
     return <CircularProgress />;
   }
   return (
-    <Container>
+    <CardsContainer>
       <Grid container spacing={3} justify="center">
         <Grid item component={Card} xs={12} md={3} className="card infected">
           <CardContent>
@@ -80,7 +80,7 @@ const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
           </CardContent>
         </Grid>
       </Grid>
-    </Container>
+    </CardsContainer>
   );
 };
 
