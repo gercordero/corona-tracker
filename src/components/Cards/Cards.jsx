@@ -1,84 +1,42 @@
 import React from "react";
+import { CardComponent } from "./Card/Card";
 import { CardsContainer } from "./Cards.styles";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  CircularProgress,
-} from "@material-ui/core";
-import CountUp from "react-countup";
+import { Grid, CircularProgress } from "@material-ui/core";
 
-const Cards = ({ data: { confirmed, recovered, deaths, lastUpdate } }) => {
-  if (!confirmed) {
+const Cards = ({ data }) => {
+  const cardTypes = [
+    {
+      dataKey: "confirmed",
+      name: "infected",
+      message: "Number of active cases from COVID-19.",
+    },
+    {
+      dataKey: "recovered",
+      name: "recovered",
+      message: "Number of recoveries from COVID-19.",
+    },
+    {
+      dataKey: "deaths",
+      name: "deaths",
+      message: "Number of deaths caused by COVID-19.",
+    },
+  ];
+  if (!data.confirmed) {
     return <CircularProgress />;
   }
   return (
     <CardsContainer>
       <Grid container spacing={3} justify="center">
-        <Grid item component={Card} xs={12} md={3} className="card infected">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Infected
-            </Typography>
-            <Typography variant="h5">
-              <CountUp
-                start={0}
-                end={confirmed.value}
-                separator=","
-                duration={2.5}
-              />
-            </Typography>
-            <Typography color="textSecondary">
-              {new Date(lastUpdate).toDateString()}
-            </Typography>
-            <Typography variant="body2">
-              Number of active cases of COVID-19
-            </Typography>
-          </CardContent>
-        </Grid>
-        <Grid item component={Card} xs={12} md={3} className="card recovered">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Recovered
-            </Typography>
-            <Typography variant="h5">
-              <CountUp
-                start={0}
-                end={recovered.value}
-                separator=","
-                duration={2.5}
-              />
-            </Typography>
-            <Typography color="textSecondary">
-              {new Date(lastUpdate).toDateString()}
-            </Typography>
-            <Typography variant="body2">
-              Number of recoveries from COVID-19
-            </Typography>
-          </CardContent>
-        </Grid>
-        <Grid item component={Card} xs={12} md={3} className="card deaths">
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Deaths
-            </Typography>
-            <Typography variant="h5">
-              <CountUp
-                start={0}
-                end={deaths.value}
-                separator=","
-                duration={2.5}
-              />
-            </Typography>
-            <Typography color="textSecondary">
-              {new Date(lastUpdate).toDateString()}
-            </Typography>
-            <Typography variant="body2">
-              Number of deaths caused by COVID-19
-            </Typography>
-          </CardContent>
-        </Grid>
+        {cardTypes.map((type, i) => (
+          <CardComponent
+            key={type.dataKey + i}
+            cardTitle={type.name.charAt(0).toUpperCase() + type.name.slice(1)}
+            className={type.name}
+            value={data[type.dataKey].value}
+            lastUpdate={data.lastUpdate}
+            cardSubtitle={type.message}
+          />
+        ))}
       </Grid>
     </CardsContainer>
   );
